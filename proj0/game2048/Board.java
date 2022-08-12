@@ -12,15 +12,18 @@ import java.util.Random;
  */
 public class Board implements Iterable<Tile> {
     /** Current contents of the board. */
+    // Example of instance variable
     private Tile[][] values;
     /** Side that the board currently views as north. */
     private Side viewPerspective;
 
+    // Example of constructor
     public Board(int size) {
         values = new Tile[size][size];
         viewPerspective = Side.NORTH;
     }
 
+    // Example of non-static method
     /** Shifts the view of the board such that the board behaves as if side S is north. */
     public void setViewingPerspective(Side s) {
         viewPerspective = s;
