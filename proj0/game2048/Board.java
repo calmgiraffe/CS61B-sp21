@@ -14,6 +14,7 @@ public class Board implements Iterable<Tile> {
     /** Current contents of the board. */
     // Example of instance variable
     private Tile[][] values;
+
     /** Side that the board currently views as north. */
     private Side viewPerspective;
 

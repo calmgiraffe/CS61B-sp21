@@ -139,9 +139,9 @@ public class Model extends Observable {
     public static boolean emptySpaceExists(Board b) {
         int size = b.size();
 
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                if (b.tile(i, j) == null) {
+        for (int col = 0; col < size; col++) {
+            for (int row = 0; row < size; row++) {
+                if (b.tile(col, row) == null) {
                     return true;
                 }
             }
@@ -155,7 +155,15 @@ public class Model extends Observable {
      * given a Tile object t, we get its value with t.value().
      */
     public static boolean maxTileExists(Board b) {
-        // TODO: Fill in this function.
+        int size = b.size();
+
+        for (int col = 0; col < size; col++) {
+            for (int row = 0; row < size; row++) {
+                if (b.tile(col, row) != null && b.tile(col, row).value() == MAX_PIECE) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
