@@ -174,10 +174,49 @@ public class Model extends Observable {
      * 2. There are two adjacent tiles with the same value.
      */
     public static boolean atLeastOneMoveExists(Board b) {
-        // TODO: Fill in this function.
+        if (emptySpaceExists(b) || adjacentExists(b)) {
+            return true;
+        }
         return false;
     }
 
+    public static boolean adjacentExists(Board b) {
+        int size = b.size();
+
+        for (int col = 0; col < size; col++) {
+            for (int row = 0; row < size; row++) {
+                // Check every other tile of the board
+                // .tile() returns the current Tile at (col, row); returns null if no tile
+                if ((col + row) % 2 == 0 && checkAdjacentTiles(b, col, row, size)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean checkAdjacentTiles(Board b, int col, int row, int size) {
+        for (int i = -1; i <= 1; i += 2) {
+            if (isValidIndex((col+i), (row), size) &&
+            b.tile(col, row).value() == b.tile((col+i), (row)).value()) {
+                return true;
+            }
+        }
+        for (int j = -1; j <= 1; j += 2) {
+            if (isValidIndex((col), (row+j), size) &&
+            b.tile(col, row).value() == b.tile((col), (row+j)).value()) {
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isValidIndex(int i, int j, int size) {
+        if ((i < 0 || i >= size) || (j < 0 || j >= size)) {
+            return false;
+        }
+        return true;
+    }
 
     @Override
     /* Returns the model as a string, used for debugging. */
