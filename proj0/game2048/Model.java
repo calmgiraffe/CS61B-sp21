@@ -107,18 +107,93 @@ public class Model extends Observable {
      *    and the trailing tile does not.
      * */
     public boolean tilt(Side side) {
-        boolean changed;
-        changed = false;
+        boolean changed = false;
+        int changes = 0;
 
         // TODO: Modify this.board (and perhaps this.score) to account
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
+
+        // Set tilt direction as temporary north
+        board.setViewingPerspective(side);
+
+        // Iterate through columns of Board
+        for (int col = 0; col < board.size(); col++) {
+            changes += moveTiles(col);
+        }
+
+        if (changes > 0) {
+            changed = true;
+        }
+
+        // Reset board north to NORTH
+        board.setViewingPerspective(Side.NORTH);
 
         checkGameOver();
         if (changed) {
             setChanged();
         }
         return changed;
+    }
+
+    /** For a tile in a Board column, calculates the number of spaces a tile must move up
+     * in order to result in a correct final position, then applies this move to the tile.
+     */
+    public int moveTiles(int col) {
+        int buffer = 0;
+        int topRow = this.board.size() - 1;
+        int changes = 0;
+        Tile t;
+
+        // For a column, iterate from the second row downwards to row 0
+        for (int row = topRow - 1; row >= 0; row--) {
+            if (this.board.tile(col, row) != null) {
+                int aboveSpace = (topRow - buffer) - row;
+                int aboveTiles = findAboveTiles(col, row, (topRow - buffer));
+                int numMovesUp = aboveSpace - aboveTiles;
+
+                t = this.board.tile(col, row);
+                if (canMerge(col, row, (topRow - buffer))) {
+                    numMovesUp++;
+                    buffer++;
+                    this.score += 2*this.board.tile(col, row).value();
+                }
+
+                if (numMovesUp > 0) {
+                    changes++;
+                }
+
+                this.board.move(col, row + numMovesUp, t);
+            }
+        }
+        return changes;
+    }
+
+    /** Returns the number of tiles above (north of) a tile at (col, row), up to topRow */
+    public int findAboveTiles(int col, int row, int topRow) {
+        int count = 0;
+        for (int r = row + 1; r <= topRow; r++) {
+            if (this.board.tile(col, r) != null) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    /** Returns true if able to merge, false otherwise.
+     * A tile is able to merge if there is an uninterrupted path to a tile of the same value above it,
+     * or if there are three tiles above it of the same values.
+     */
+    public boolean canMerge(int col, int row, int topRow) {
+        for (int r = row + 1; r <= topRow; r++) {
+
+            // If null, continue to next iteration
+            if (this.board.tile(col, r) != null
+            && this.board.tile(col, r).value() == this.board.tile(col, row).value()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /** Checks if the game is over and sets the gameOver variable
