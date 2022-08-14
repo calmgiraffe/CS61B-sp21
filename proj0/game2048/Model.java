@@ -25,7 +25,7 @@ public class Model extends Observable {
     /** Largest piece value. */
     public static final int MAX_PIECE = 2048;
 
-    /** A new 2048 game on a board of size SIZE with no pieces
+    /** A new 2048 game on a board of git size SIZE with no pieces
      *  and score 0. */
     public Model(int size) {
         board = new Board(size);
@@ -249,10 +249,7 @@ public class Model extends Observable {
      * 2. There are two adjacent tiles with the same value.
      */
     public static boolean atLeastOneMoveExists(Board b) {
-        if (emptySpaceExists(b) || adjacentExists(b)) {
-            return true;
-        }
-        return false;
+        return emptySpaceExists(b) || adjacentExists(b);
     }
 
     public static boolean adjacentExists(Board b) {
@@ -287,10 +284,7 @@ public class Model extends Observable {
     }
 
     public static boolean isValidIndex(int i, int j, int size) {
-        if ((i < 0 || i >= size) || (j < 0 || j >= size)) {
-            return false;
-        }
-        return true;
+        return (i >= 0 && i < size) && (j >= 0 && j < size);
     }
 
     @Override
