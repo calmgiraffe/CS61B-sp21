@@ -108,7 +108,6 @@ public class Model extends Observable {
      * */
     public boolean tilt(Side side) {
         boolean changed = false;
-        int changes = 0;
 
         // TODO: Modify this.board (and perhaps this.score) to account
         // for the tilt to the Side SIDE. If the board changed, set the
@@ -119,11 +118,7 @@ public class Model extends Observable {
 
         // Iterate through columns of Board
         for (int col = 0; col < board.size(); col++) {
-            changes += moveTiles(col);
-        }
-
-        if (changes > 0) {
-            changed = true;
+            changed = moveTiles(col) || changed;
         }
 
         // Reset board north to NORTH
@@ -139,10 +134,10 @@ public class Model extends Observable {
     /** For a tile in a Board column, calculates the number of spaces a tile must move up
      * in order to result in a correct final position, then applies this move to the tile.
      */
-    public int moveTiles(int col) {
+    public boolean moveTiles(int col) {
         int buffer = 0;
         int topRow = this.board.size() - 1;
-        int changes = 0;
+        boolean changes = false;
         Tile t;
 
         // For a column, iterate from the second row downwards to row 0
@@ -152,17 +147,16 @@ public class Model extends Observable {
                 int aboveTiles = findAboveTiles(col, row, (topRow - buffer));
                 int numMovesUp = aboveSpace - aboveTiles;
 
-                t = this.board.tile(col, row);
                 if (canMerge(col, row, (topRow - buffer))) {
                     numMovesUp++;
                     buffer++;
                     this.score += 2*this.board.tile(col, row).value();
                 }
-
                 if (numMovesUp > 0) {
-                    changes++;
+                    changes = true;
                 }
 
+                t = this.board.tile(col, row);
                 this.board.move(col, row + numMovesUp, t);
             }
         }
@@ -181,12 +175,10 @@ public class Model extends Observable {
     }
 
     /** Returns true if able to merge, false otherwise.
-     * A tile is able to merge if there is an uninterrupted path to a tile of the same value above it,
-     * or if there are three tiles above it of the same values.
+     * A tile is able to merge if there is an uninterrupted path to a tile of the same value above it, up to topRow
      */
     public boolean canMerge(int col, int row, int topRow) {
         for (int r = row + 1; r <= topRow; r++) {
-
             // If null, continue to next iteration
             if (this.board.tile(col, r) != null
             && this.board.tile(col, r).value() == this.board.tile(col, row).value()) {
@@ -204,7 +196,7 @@ public class Model extends Observable {
     }
 
     /** Determine whether game is over. */
-    private static boolean checkGameOver(Board b) {
+    private boolean checkGameOver(Board b) {
         return maxTileExists(b) || !atLeastOneMoveExists(b);
     }
 
