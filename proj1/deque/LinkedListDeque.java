@@ -13,47 +13,45 @@ public class LinkedListDeque<T> {
             front = f;
         }
     }
-    public Node sentFront;
-    public Node sentBack;
+    public Node sentinel;
     public int size;
 
     public LinkedListDeque() { // Constructor
-        sentFront = new Node(null, null, null);
-        sentBack = new Node(null, null, null);
-        sentFront.front = sentBack;
-        sentBack.back = sentFront;
+        sentinel = new Node(null, null, null);
+        sentinel.front = sentinel;
+        sentinel.back = sentinel;
         size = 0;
     }
     public void addFirst(T item) {
-        Node newNode = new Node(sentFront, item, sentFront.front);
-        sentFront.front.back = newNode;
-        sentFront.front = newNode;
+        Node newNode = new Node(sentinel, item, sentinel.front);
+        sentinel.front.back = newNode;
+        sentinel.front = newNode;
         size += 1;
     }
     public T removeFirst() {
         if (size == 0) {
             return null;
         }
-        T removedItem = sentFront.front.item;
-        sentFront.front = sentFront.front.front;
-        sentFront.front.back = sentFront;
+        T removedItem = sentinel.front.item;
+        sentinel.front = sentinel.front.front;
+        sentinel.front.back = sentinel;
         size -= 1;
 
         return removedItem;
     }
     public void addLast(T item) {
-        Node newNode = new Node(sentBack.back, item, sentBack);
-        sentBack.back.front = newNode;
-        sentBack.back = newNode;
+        Node newNode = new Node(sentinel.back, item, sentinel);
+        sentinel.back.front = newNode;
+        sentinel.back = newNode;
         size += 1;
     }
     public T removeLast() {
         if (size == 0) {
             return null;
         }
-        T removedItem = sentBack.back.item;
-        sentBack.back = sentBack.back.back;
-        sentBack.back.front = sentBack;
+        T removedItem = sentinel.back.item;
+        sentinel.back = sentinel.back.back;
+        sentinel.back.front = sentinel;
         size -= 1;
 
         return removedItem;
@@ -68,7 +66,7 @@ public class LinkedListDeque<T> {
         return false;
     }
     public T get(int index) {
-        Node tmp = sentFront.front;
+        Node tmp = sentinel.front;
 
         for (int i = 0; i < size; i++) {
             if (i == index) {
@@ -79,10 +77,10 @@ public class LinkedListDeque<T> {
         return null;
     }
     public void printDeque() {
-        Node tmp = sentFront.front;
+        Node tmp = sentinel.front;
 
         for (int i = 0; i < size; i++) {
-            if (tmp.equals(sentBack)) {
+            if (tmp.equals(sentinel)) {
                 System.out.println();
             }
 
