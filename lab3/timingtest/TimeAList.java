@@ -7,7 +7,7 @@ import edu.princeton.cs.algs4.Stopwatch;
 
 // Tabulates the amount of time needed to create a AList of various sizes using the slow addLast method
 public class TimeAList {
-    public static int MAX_POWER = 7;
+    public static int MAX_POWER = 10;
 
     private static void printTimingTable(AList<Integer> Ns, AList<Double> times, AList<Integer> opCounts) {
         System.out.printf("%12s %12s %12s %12s\n", "N", "time (s)", "# ops", "microsec/op");
