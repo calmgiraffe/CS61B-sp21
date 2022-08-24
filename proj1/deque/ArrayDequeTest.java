@@ -1,5 +1,6 @@
 package deque;
 
+import edu.princeton.cs.algs4.StdRandom;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -103,7 +104,6 @@ public class ArrayDequeTest {
 
     @Test
     /* Add large number of elements to deque; check if order is correct. */
-    // Errors because array size fixed at 8
     public void bigArrayDequeTest() {
 
         ArrayDeque<Integer> a1 = new ArrayDeque<Integer>();
@@ -117,6 +117,39 @@ public class ArrayDequeTest {
 
         for (double i = 999; i > 500; i--) {
             assertEquals("Should have the same value", i, (double) a1.removeLast(), 0.0);
+        }
+    }
+
+    @Test
+    /* Adds 1000 elements, then randomly adds and removes 1000 more elements.
+      * After the last iteration, ensure that size, nextFirst, nextLast are correct values
+      */
+    public void randomizedTest() {
+        ArrayDeque<Integer> a1 = new ArrayDeque<Integer>();
+
+        for (int i = 0; i < 1000; i++) {
+            int operation = StdRandom.uniform(0, 2);
+
+            if (operation == 0) {
+                a1.addFirst(1);
+            } else if (operation == 1) {
+                a1.addLast(1);
+            }
+        }
+        // Stop at i = 999
+        for (int i = 0; i < 1000; i++) {
+            int operation = StdRandom.uniform(0, 4);
+            int n = StdRandom.uniform(0, 10);
+
+            if (operation == 0) {
+                a1.addFirst(n);
+            } else if (operation == 1) {
+                a1.addLast(n);
+            } else if (operation == 2) {
+                a1.removeFirst();
+            } else if (operation == 3) {
+                a1.removeLast();
+            }
         }
     }
 }
