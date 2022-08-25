@@ -152,4 +152,21 @@ public class ArrayDequeTest {
             }
         }
     }
+
+    @Test
+    public void equalsTest() {
+        ArrayDeque<Integer> a1 = new ArrayDeque<>();
+        ArrayDeque<Integer> a2 = new ArrayDeque<>();
+        ArrayDeque<String> a3 = new ArrayDeque<>();
+        ArrayDeque<String> a4 = new ArrayDeque<>();
+
+        for (int i = 0; i < 100; i++) {
+            a1.addLast(i);
+            a2.addLast(i);
+            a3.addLast("a");
+            a4.addLast("a");
+        }
+        assertTrue(a1.equals(a2));
+        assertTrue(a3.equals(a4));
+    }
 }

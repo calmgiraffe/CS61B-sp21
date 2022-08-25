@@ -23,6 +23,7 @@ public class ArrayDeque<T> {
         T[] tmp = (T []) new Object[size];
         T[] newItems = (T []) new Object[newCapacity];
         int firstItem = nextFirst + 1;
+
         for (int i = 0; i < size; i++) {
             tmp[i] = items[(firstItem + i) % items.length];
         }
@@ -36,6 +37,7 @@ public class ArrayDeque<T> {
         items[nextFirst] = item;
         size += 1;
         nextFirst -= 1;
+
         if (nextFirst < 0) {
             nextFirst = items.length - 1;
         }
@@ -48,6 +50,7 @@ public class ArrayDeque<T> {
         items[nextLast] = item;
         size += 1;
         nextLast += 1;
+
         if (nextLast >= items.length) {
             nextLast = 0;
         }
@@ -66,6 +69,7 @@ public class ArrayDeque<T> {
     }
     public void printDeque() {
         int nextIndex = nextFirst + 1;
+
         for (int i = 0; i < size; i++) {
             if (nextIndex >= items.length) {
                 nextIndex = (items.length + i) % items.length;
@@ -121,4 +125,24 @@ public class ArrayDeque<T> {
     public T get(int index) {
         return items[index];
     }
+    public boolean compareItems(ArrayDeque o) {
+        for (int i = 0; i < items.length; i++) {
+            // If one is null but the other is not null, return false
+            // if both are not null and both not are equal, return false
+            if ((this.items[i] != null && o.items[i] == null) || (this.items[i] == null && o.items[i] != null)) {
+                return false;
+            } else if (this.items[i] != null && o.items[i] != null && !(this.items[i]).equals(o.items[i])) {
+                return false;
+            }
+        }
+        return true;
+    }
+    public boolean equals(Object o) {
+        if (o instanceof ArrayDeque) {
+            return this.compareItems((ArrayDeque) o);
+        }
+        return false;
+    }
+
+    // Todo: iterator
 }

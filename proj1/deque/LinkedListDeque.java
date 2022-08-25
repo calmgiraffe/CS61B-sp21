@@ -76,6 +76,19 @@ public class LinkedListDeque<T> {
         }
         return null;
     }
+    public T getRecursive(int index) {
+        // helper class that allows easy recursion
+        class Helper {
+            T helper(int index, Node n) {
+                if (index == 0) {
+                    return n.item;
+                }
+                return helper(index - 1, n.front);
+            }
+        }
+        Helper h = new Helper();
+        return h.helper(index, sentinel.front);
+    }
     public void printDeque() {
         Node tmp = sentinel.front;
 
@@ -88,4 +101,27 @@ public class LinkedListDeque<T> {
             tmp = tmp.front;
         }
     }
+    public boolean compareItems(LinkedListDeque o) {
+        Node tmpThis = this.sentinel.front;
+        Node tmp = o.sentinel.front;
+
+        for (int i = 0; i < size; i++) {
+            if (!(tmpThis.item).equals(tmp.item)) {
+                return false;
+            }
+            tmpThis = tmpThis.front;
+            tmp = tmp.front;
+        }
+        return true;
+    }
+    /* Returns whether the parameter o is equal to the Deque.
+     * o is considered equal if it is a Deque and if it contains the same contents in the same order.
+     */
+    public boolean equals(Object o) {
+        if (o instanceof LinkedListDeque) {
+            return this.compareItems((LinkedListDeque) o);
+        }
+        return false;
+    }
+    // Todo: Iterator
 }
