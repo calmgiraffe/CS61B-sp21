@@ -22,40 +22,34 @@ public class ArrayDeque<T> {
     public void resize(int newCapacity) {
         T[] tmp = (T []) new Object[size];
         T[] newItems = (T []) new Object[newCapacity];
-        int firstItem = nextFirst + 1;
+        int firstDex = nextFirst + 1;
 
         for (int i = 0; i < size; i++) {
-            tmp[i] = items[(firstItem + i) % items.length];
+            tmp[i] = get((firstDex + i) % items.length);
         }
         System.arraycopy(tmp, 0, newItems, 0, size);
         items = newItems;
         nextFirst = items.length - 1;
         nextLast = size;
     }
-    // Add the item to index nextFirst on 'items', then increment 'size' and 'nextFirst'
+    /* Add the item to index nextFirst on 'items', then increment 'size' and 'nextFirst' */
     public void addFirst(T item) {
         items[nextFirst] = item;
         size += 1;
-        nextFirst -= 1;
+        nextFirst = (nextFirst - 1) % items.length;
 
-        if (nextFirst < 0) {
-            nextFirst = items.length - 1;
-        }
         if (size == items.length) {
-            this.resize(size * 2);
+            resize(size * 2);
         }
     }
-    // Add the item to index nextLast on 'items', then increment 'size' and 'nextLast'
+    /* Add the item to index nextLast on 'items', then increment 'size' and 'nextLast' */
     public void addLast(T item) {
         items[nextLast] = item;
         size += 1;
-        nextLast += 1;
+        nextLast = (nextLast + 1) % items.length;
 
-        if (nextLast >= items.length) {
-            nextLast = 0;
-        }
         if (size == items.length) {
-            this.resize(size * 2);
+            resize(size * 2);
         }
     }
     public boolean isEmpty() {
@@ -68,13 +62,11 @@ public class ArrayDeque<T> {
         return size;
     }
     public void printDeque() {
-        int nextIndex = nextFirst + 1;
+        int firstDex = nextFirst + 1;
 
         for (int i = 0; i < size; i++) {
-            if (nextIndex >= items.length) {
-                nextIndex = (items.length + i) % items.length;
-            }
-            System.out.print(items[nextIndex] + " ");
+            int nextIndex = (firstDex + i) % items.length;
+            System.out.print(get(nextIndex) + " ");
         }
         System.out.println();
     }
@@ -84,19 +76,17 @@ public class ArrayDeque<T> {
             return null;
         }
         // nextFirst is null, so index of first item is nextFirst + 1
-        int targetIndex = nextFirst + 1;
-        if (targetIndex >= items.length) {
-            targetIndex = 0;
-        }
+        int targetIndex = (nextFirst + 1) % items.length;
+
         // Get desired item, update pointer, decrement size, update nextFirst
-        T item = items[targetIndex];
+        T item = get(targetIndex);
         items[targetIndex] = null;
         size -= 1;
         nextFirst = targetIndex;
 
         // Resize if capacity < 0.25
         if ((float) size / items.length < 0.25) {
-            this.resize(items.length / 4);
+            resize(items.length / 4);
         }
         return item;
     }
@@ -105,20 +95,18 @@ public class ArrayDeque<T> {
         if (size == 0) {
             return null;
         }
-        // nextFirst is null, so index of first item is nextFirst + 1
-        int targetIndex = nextLast - 1;
-        if (targetIndex < 0) {
-            targetIndex = items.length - 1;
-        }
+        // nextLast is null, so index of first item is nextFirst - 1
+        int targetIndex = (nextLast - 1) % items.length;
+
         // Get desired item, update pointer, decrement size, update nextFirst
-        T item = items[targetIndex];
+        T item = get(targetIndex);
         items[targetIndex] = null;
         size -= 1;
         nextLast = targetIndex;
 
         // Resize if capacity < 0.25
         if ((float) size / items.length < 0.25) {
-            this.resize(items.length / 4);
+            resize(items.length / 4);
         }
         return item;
     }
@@ -129,9 +117,9 @@ public class ArrayDeque<T> {
         for (int i = 0; i < items.length; i++) {
             // If one is null but the other is not null, return false
             // if both are not null and both not are equal, return false
-            if ((this.items[i] != null && o.items[i] == null) || (this.items[i] == null && o.items[i] != null)) {
+            if (get(i) != null && o.get(i) == null || get(i) == null && o.get(i) != null) {
                 return false;
-            } else if (this.items[i] != null && o.items[i] != null && !(this.items[i]).equals(o.items[i])) {
+            } else if (get(i) != null && o.get(i) != null && !(get(i).equals(o.get(i)))) {
                 return false;
             }
         }
@@ -139,7 +127,7 @@ public class ArrayDeque<T> {
     }
     public boolean equals(Object o) {
         if (o instanceof ArrayDeque) {
-            return this.compareItems((ArrayDeque) o);
+            return compareItems((ArrayDeque) o);
         }
         return false;
     }

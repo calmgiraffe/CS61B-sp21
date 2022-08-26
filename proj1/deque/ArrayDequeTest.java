@@ -164,9 +164,18 @@ public class ArrayDequeTest {
             a1.addLast(i);
             a2.addLast(i);
             a3.addLast("a");
-            a4.addLast("a");
+            a4.addLast("b");
         }
         assertTrue(a1.equals(a2));
-        assertTrue(a3.equals(a4));
+        assertFalse(a3.equals(a4));
+    }
+
+    @Test
+    public void printDequeTest() {
+        ArrayDeque<Integer> a1 = new ArrayDeque<>();
+        for (int i = 0; i < 5; i++) {
+            a1.addLast(i);
+        }
+        a1.printDeque();
     }
 }
