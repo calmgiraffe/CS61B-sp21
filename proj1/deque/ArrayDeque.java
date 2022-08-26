@@ -1,8 +1,9 @@
 package deque;
 
 import java.lang.reflect.Array;
+import java.util.Iterator;
 
-public class ArrayDeque<T> implements Deque<T> {
+public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     public T[] items;
     public int size;
     public int nextFirst; // index of where the next first item is to be placed
@@ -129,6 +130,7 @@ public class ArrayDeque<T> implements Deque<T> {
 
     public boolean compareItems(ArrayDeque o) {
         for (int i = 0; i < items.length; i++) {
+
             // If one is null but the other is not null, return false
             // if both are not null and both not are equal, return false
             if (get(i) != null && o.get(i) == null || get(i) == null && o.get(i) != null) {
@@ -151,5 +153,26 @@ public class ArrayDeque<T> implements Deque<T> {
         return false;
     }
 
-    // Todo: iterator
+    @Override
+    /* Returns an iterator that looks into the data type */
+    public Iterator<T> iterator() {
+        return new ArrayDequeIterator();
+    }
+
+    // Recall: Iterator interface has methods defined in it, two of which are hasNext() and next()
+    // Other methods are remove(), forEachRemaining()
+    private class ArrayDequeIterator implements Iterator<T> {
+        int itemsToIterate = size();
+        int iteratorPos = (nextFirst + 1) % items.length;
+
+        public boolean hasNext() {
+            return itemsToIterate > 0;
+        }
+        public T next() {
+            T item = get(iteratorPos);
+            iteratorPos = (iteratorPos + 1) % items.length;
+            itemsToIterate -= 1;
+            return item;
+        }
+    }
 }

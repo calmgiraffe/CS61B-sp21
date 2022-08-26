@@ -1,6 +1,8 @@
 package deque;
 
-public class LinkedListDeque<T> implements Deque<T> {
+import java.util.Iterator;
+
+public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
     // Nested Node class definition - cannot be accessed from object outside LinkedListDeque
     private class Node {
         public Node back;
@@ -135,5 +137,27 @@ public class LinkedListDeque<T> implements Deque<T> {
         }
         return false;
     }
-    // Todo: Iterator
+
+    @Override
+    /* Returns an iterator that looks into the data type */
+    public Iterator<T> iterator() {
+        return new LinkedListIterator();
+    }
+
+    // Recall: Iterator interface has methods defined in it, two of which are hasNext() and next()
+    // Other methods are remove(), forEachRemaining()
+    private class LinkedListIterator implements Iterator<T> {
+        int itemsToIterate = size();
+        Node iteratorNode = sentinel.front;
+
+        public boolean hasNext() {
+            return itemsToIterate > 0;
+        }
+        public T next() {
+            T item = iteratorNode.item;
+            itemsToIterate -= 1;
+            iteratorNode = iteratorNode.front;
+            return item;
+        }
+    }
 }

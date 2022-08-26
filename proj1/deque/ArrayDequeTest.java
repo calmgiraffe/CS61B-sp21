@@ -195,6 +195,19 @@ public class ArrayDequeTest {
         for (int i = 0; i < 5; i++) {
             a1.addLast(i);
         }
+        System.out.println("Testing printDeque:");
         a1.printDeque();
+    }
+
+    @Test
+    public void iteratorTest() {
+        ArrayDeque<Integer> a1 = new ArrayDeque<>();
+        for (int i = 0; i < 5; i++) {
+            a1.addLast(i);
+        }
+        System.out.println("Testing iteratorTest:");
+        for (int x : a1) {
+            System.out.println(x);
+        }
     }
 }
