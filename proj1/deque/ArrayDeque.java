@@ -2,7 +2,7 @@ package deque;
 
 import java.lang.reflect.Array;
 
-public class ArrayDeque<T> {
+public class ArrayDeque<T> implements Deque<T> {
     public T[] items;
     public int size;
     public int nextFirst; // index of where the next first item is to be placed
@@ -14,15 +14,20 @@ public class ArrayDeque<T> {
         nextFirst = items.length - 1;
         nextLast = 0;
     }
+
     /* tmp stores the results of intermediate step, which is to copy items one-by-one
      * starting from the index of the first item and moving forwards. This shift the
      * items, so they start at index 0. Then, do a regular arraycopy into newItems,
      * where both source and destination positions are i=0
      */
     public void resize(int newCapacity) {
+        // Min array size 8, can't make tmp array of size 0
+        if (size == 0) {
+            return;
+        }
         T[] tmp = (T []) new Object[size];
         T[] newItems = (T []) new Object[newCapacity];
-        int firstDex = nextFirst + 1;
+        int firstDex = (nextFirst + 1) % items.length;
 
         for (int i = 0; i < size; i++) {
             tmp[i] = get((firstDex + i) % items.length);
@@ -32,16 +37,20 @@ public class ArrayDeque<T> {
         nextFirst = items.length - 1;
         nextLast = size;
     }
+
+    @Override
     /* Add the item to index nextFirst on 'items', then increment 'size' and 'nextFirst' */
     public void addFirst(T item) {
         items[nextFirst] = item;
         size += 1;
-        nextFirst = (nextFirst - 1) % items.length;
+        nextFirst = Math.floorMod(nextFirst - 1, items.length);
 
         if (size == items.length) {
             resize(size * 2);
         }
     }
+
+    @Override
     /* Add the item to index nextLast on 'items', then increment 'size' and 'nextLast' */
     public void addLast(T item) {
         items[nextLast] = item;
@@ -52,15 +61,13 @@ public class ArrayDeque<T> {
             resize(size * 2);
         }
     }
-    public boolean isEmpty() {
-        if (size == 0) {
-            return true;
-        }
-        return false;
-    }
+
+    @Override
     public int size() {
         return size;
     }
+
+    @Override
     public void printDeque() {
         int firstDex = nextFirst + 1;
 
@@ -70,6 +77,8 @@ public class ArrayDeque<T> {
         }
         System.out.println();
     }
+
+    @Override
     public T removeFirst() {
         // Return null if no items
         if (size == 0) {
@@ -90,13 +99,15 @@ public class ArrayDeque<T> {
         }
         return item;
     }
+
+    @Override
     public T removeLast() {
         // Return null if no items
         if (size == 0) {
             return null;
         }
         // nextLast is null, so index of first item is nextFirst - 1
-        int targetIndex = (nextLast - 1) % items.length;
+        int targetIndex = Math.floorMod(nextLast - 1, items.length);
 
         // Get desired item, update pointer, decrement size, update nextFirst
         T item = get(targetIndex);
@@ -110,9 +121,12 @@ public class ArrayDeque<T> {
         }
         return item;
     }
+
+    @Override
     public T get(int index) {
         return items[index];
     }
+
     public boolean compareItems(ArrayDeque o) {
         for (int i = 0; i < items.length; i++) {
             // If one is null but the other is not null, return false
@@ -125,6 +139,11 @@ public class ArrayDeque<T> {
         }
         return true;
     }
+
+    @Override
+    /* Returns whether the parameter o is equal to the Deque.
+     * o is considered equal if it is a Deque and if it contains the same contents in the same order.
+     */
     public boolean equals(Object o) {
         if (o instanceof ArrayDeque) {
             return compareItems((ArrayDeque) o);

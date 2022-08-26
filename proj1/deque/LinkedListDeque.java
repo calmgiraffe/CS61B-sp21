@@ -1,6 +1,6 @@
 package deque;
 
-public class LinkedListDeque<T> {
+public class LinkedListDeque<T> implements Deque<T> {
     // Nested Node class definition - cannot be accessed from object outside LinkedListDeque
     private class Node {
         public Node back;
@@ -22,29 +22,37 @@ public class LinkedListDeque<T> {
         sentinel.back = sentinel;
         size = 0;
     }
+
+    @Override
     public void addFirst(T item) {
         Node newNode = new Node(sentinel, item, sentinel.front);
         sentinel.front.back = newNode;
         sentinel.front = newNode;
         size += 1;
     }
+
+    @Override
     public T removeFirst() {
         if (size == 0) {
             return null;
         }
-        T removedItem = sentinel.front.item;
+        T removedItem = get(0);
         sentinel.front = sentinel.front.front;
         sentinel.front.back = sentinel;
         size -= 1;
 
         return removedItem;
     }
+
+    @Override
     public void addLast(T item) {
         Node newNode = new Node(sentinel.back, item, sentinel);
         sentinel.back.front = newNode;
         sentinel.back = newNode;
         size += 1;
     }
+
+    @Override
     public T removeLast() {
         if (size == 0) {
             return null;
@@ -56,15 +64,13 @@ public class LinkedListDeque<T> {
 
         return removedItem;
     }
+
+    @Override
     public int size() {
         return size;
     }
-    public boolean isEmpty() {
-        if (size == 0) {
-            return true;
-        }
-        return false;
-    }
+
+    @Override
     public T get(int index) {
         Node tmp = sentinel.front;
 
@@ -76,6 +82,7 @@ public class LinkedListDeque<T> {
         }
         return null;
     }
+
     public T getRecursive(int index) {
         // helper class that allows easy recursion
         class Helper {
@@ -89,6 +96,8 @@ public class LinkedListDeque<T> {
         Helper h = new Helper();
         return h.helper(index, sentinel.front);
     }
+
+    @Override
     public void printDeque() {
         Node tmp = sentinel.front;
 
@@ -101,6 +110,7 @@ public class LinkedListDeque<T> {
             tmp = tmp.front;
         }
     }
+
     public boolean compareItems(LinkedListDeque o) {
         Node tmpThis = this.sentinel.front;
         Node tmp = o.sentinel.front;
@@ -114,6 +124,8 @@ public class LinkedListDeque<T> {
         }
         return true;
     }
+
+    @Override
     /* Returns whether the parameter o is equal to the Deque.
      * o is considered equal if it is a Deque and if it contains the same contents in the same order.
      */

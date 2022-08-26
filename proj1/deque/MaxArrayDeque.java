@@ -16,10 +16,12 @@ public class MaxArrayDeque<T> extends ArrayDeque<T> {
         if (items == null) {
             return null;
         }
-        T maxItem = items[nextFirst + 1];
+        int currIndex = (nextFirst + 1) % items.length;
+        T maxItem = get(currIndex);
+
         for (int i = 0; i < size; i++) {
-            int index = (nextFirst + 1) % items.length;
-            T currItem = get(index + i);
+            int index = (currIndex + i) % items.length;
+            T currItem = get(index);
 
             if (c.compare(currItem, maxItem) > 0) {
                 maxItem = currItem;

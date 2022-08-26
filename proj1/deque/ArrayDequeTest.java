@@ -107,35 +107,33 @@ public class ArrayDequeTest {
     public void bigArrayDequeTest() {
 
         ArrayDeque<Integer> a1 = new ArrayDeque<Integer>();
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 10000; i++) {
             a1.addLast(i);
         }
 
-        for (double i = 0; i < 500; i++) {
+        for (double i = 0; i < 5000; i++) {
             assertEquals("Should have the same value", i, (double) a1.removeFirst(), 0.0);
         }
 
-        for (double i = 999; i > 500; i--) {
+        for (double i = 9999; i > 5000; i--) {
             assertEquals("Should have the same value", i, (double) a1.removeLast(), 0.0);
         }
     }
 
     @Test
-    /* Adds 1000 elements, then randomly adds and removes 1000 more elements.
-      * After the last iteration, ensure that size, nextFirst, nextLast are correct values
-      */
-    public void randomizedTest() {
+    public void randomizedTest1() {
         ArrayDeque<Integer> a1 = new ArrayDeque<Integer>();
 
         for (int i = 0; i < 1000; i++) {
             int operation = StdRandom.uniform(0, 2);
 
             if (operation == 0) {
-                a1.addFirst(1);
-            } else if (operation == 1) {
-                a1.addLast(1);
+                a1.addFirst(i);
+            } else {
+                a1.addLast(i);
             }
         }
+
         // Stop at i = 999
         for (int i = 0; i < 1000; i++) {
             int operation = StdRandom.uniform(0, 4);
@@ -144,10 +142,31 @@ public class ArrayDequeTest {
             if (operation == 0) {
                 a1.addFirst(n);
             } else if (operation == 1) {
-                a1.addLast(n);
-            } else if (operation == 2) {
                 a1.removeFirst();
-            } else if (operation == 3) {
+            } else if (operation == 2) {
+                a1.addLast(n);
+            } else {
+                a1.removeLast();
+            }
+        }
+    }
+
+    @Test
+    public void randomizedTest2() {
+        ArrayDeque<Integer> a1 = new ArrayDeque<Integer>();
+
+        // Stop at i = 999
+        for (int i = 0; i < 1000; i++) {
+            int operation = StdRandom.uniform(0, 4);
+            int n = StdRandom.uniform(0, 10);
+
+            if (operation == 0) {
+                a1.addFirst(n);
+            } else if (operation == 1) {
+                a1.removeFirst();
+            } else if (operation == 2) {
+                a1.addLast(n);
+            } else {
                 a1.removeLast();
             }
         }
@@ -166,8 +185,8 @@ public class ArrayDequeTest {
             a3.addLast("a");
             a4.addLast("b");
         }
-        assertTrue(a1.equals(a2));
-        assertFalse(a3.equals(a4));
+        assertEquals(a1, a2);
+        assertNotEquals(a3, a4);
     }
 
     @Test
