@@ -41,7 +41,7 @@ public class GuitarString {
     public void tic() {
         double first = buffer.removeFirst();
         double second = buffer.get(0);
-        double newDouble = DECAY * 0.5*(first + second);
+        double newDouble = DECAY * 0.5 * (first + second);
         buffer.addLast(newDouble);
     }
 
