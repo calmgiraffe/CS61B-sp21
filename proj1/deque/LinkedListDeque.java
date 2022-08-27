@@ -35,7 +35,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
 
     @Override
     public T removeFirst() {
-        if (size == 0) {
+        if (isEmpty()) {
             return null;
         }
         T removedItem = get(0);
@@ -56,7 +56,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
 
     @Override
     public T removeLast() {
-        if (size == 0) {
+        if (isEmpty()) {
             return null;
         }
         T removedItem = sentinel.back.item;
@@ -113,27 +113,17 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         }
     }
 
-    private boolean compareItems(LinkedListDeque o) {
-        Node tmpThis = this.sentinel.front;
-        Node tmp = o.sentinel.front;
-
-        for (int i = 0; i < size; i++) {
-            if (!(tmpThis.item).equals(tmp.item)) {
-                return false;
-            }
-            tmpThis = tmpThis.front;
-            tmp = tmp.front;
-        }
-        return true;
-    }
-
     @Override
-    /* Returns whether the parameter o is equal to the Deque.
-     * o is considered equal if it is a Deque and if it contains the same contents in the same order.
-     */
     public boolean equals(Object o) {
-        if (o instanceof Deque) {
-            return this.compareItems((LinkedListDeque) o);
+        if (o instanceof Deque && ((Deque<?>) o).size() == size() && !isEmpty()) {
+
+            // Iterate through all items and immediately return false if unequal items
+            for (int i = 0; i < size(); i++) {
+                if (((Deque<?>) o).get(i) != get(i)) {
+                    return false;
+                }
+            }
+            return true;
         }
         return false;
     }
@@ -144,8 +134,8 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         return new LinkedListIterator();
     }
 
-    // Recall: Iterator interface has methods defined in it, two of which are hasNext() and next()
-    // Other methods are remove(), forEachRemaining()
+    /* Recall: Iterator interface has methods defined in it, two of which are hasNext() and next()
+     * Other methods are remove(), forEachRemaining() */
     private class LinkedListIterator implements Iterator<T> {
         int itemsToIterate = size();
         Node iteratorNode = sentinel.front;

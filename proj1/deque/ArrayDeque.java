@@ -1,6 +1,5 @@
 package deque;
 
-import java.lang.reflect.Array;
 import java.util.Iterator;
 
 public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
@@ -22,7 +21,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
      * where both source and destination positions are i=0 */
     private void resize(int newCapacity) {
         // Can't make tmp array of size 0
-        if (size == 0) {
+        if (isEmpty()) {
             return;
         }
 
@@ -87,7 +86,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
     @Override
     public T removeFirst() {
-        if (size == 0) {
+        if (isEmpty()) {
             return null;
         }
         T item = get(0);
@@ -104,7 +103,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
     @Override
     public T removeLast() {
-        if (size == 0) {
+        if (isEmpty()) {
             return null;
         }
         T item = get(size - 1);
@@ -125,13 +124,11 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     }
 
     @Override
-    /* Returns whether the parameter o is equal to the Deque.
-     * o is considered equal if it is a Deque and if it contains the same contents in the same order. */
     public boolean equals(Object o) {
-        if (o instanceof Deque && ((Deque<?>) o).size() == size) {
+        if (o instanceof Deque && ((Deque<?>) o).size() == size() && !isEmpty()) {
 
             // Iterate through all items and immediately return false if unequal items
-            for (int i = 0; i < size; i++) {
+            for (int i = 0; i < size(); i++) {
                 if (((Deque<?>) o).get(i) != get(i)) {
                     return false;
                 }
