@@ -5,11 +5,11 @@ import java.util.Iterator;
 public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
     // Nested Node class definition - cannot be accessed from object outside LinkedListDeque
     private class Node {
-        public Node back;
-        public T item;
-        public Node front;
+        private Node back;
+        private T item;
+        private Node front;
 
-        public Node(Node b, T i, Node f) { // Constructor
+        Node(Node b, T i, Node f) {
             back = b;
             item = i;
             front = f;
@@ -113,17 +113,21 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         }
     }
 
+    private boolean checkEquals(Deque o) {
+        // Iterate through all items and immediately return false if unequal items
+        for (int i = 0; i < size(); i++) {
+
+            if (!get(i).equals(o.get(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
     @Override
     public boolean equals(Object o) {
+        // If both objects are non-empty Deque
         if (o instanceof Deque && ((Deque<?>) o).size() == size() && !isEmpty()) {
-
-            // Iterate through all items and immediately return false if unequal items
-            for (int i = 0; i < size(); i++) {
-                if (((Deque<?>) o).get(i) != get(i)) {
-                    return false;
-                }
-            }
-            return true;
+            return checkEquals((Deque) o);
         }
         return false;
     }

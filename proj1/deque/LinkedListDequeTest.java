@@ -138,21 +138,27 @@ public class LinkedListDequeTest {
     @Test
     public void equalsTest() {
         LinkedListDeque<Integer> l1 = new LinkedListDeque<>();
-        ArrayDeque<Integer> a1 = new ArrayDeque<>();
-        LinkedListDeque<String> l2 = new LinkedListDeque<>();
-        ArrayDeque<String> a2 = new ArrayDeque<>();
+        ArrayDeque<String> a1 = new ArrayDeque<>();
+        LinkedListDeque<Integer> l2 = new LinkedListDeque<>();
+        ArrayDeque<Integer> a2 = new ArrayDeque<>();
+        LinkedListDeque<String> l3 = new LinkedListDeque<>();
+        ArrayDeque<String> a3 = new ArrayDeque<>();
+
+        String s = "hello";
 
         for (int i = 0; i < 10; i++) {
             l1.addLast(i);
-            a1.addLast(i);
-            l2.addLast("a");
-            a2.addLast("a");
+            a1.addLast("a");
+            l2.addLast(i);
+            a2.addLast(i);
+            l3.addLast(s);
+            a3.addLast(s);
         }
-        assertTrue(a1.equals(l1));
-        assertTrue(a2.equals(l2));
-        assertFalse(l1.equals(l2));
+        assertTrue(l1.equals(l2));
+        assertTrue(l1.equals(a2));
+        assertFalse(l1.equals(a1));
         assertFalse(a1.equals(a2));
-        assertFalse(a1.equals(l2));
+        assertTrue(a3.equals(l3));
     }
 
     @Test
