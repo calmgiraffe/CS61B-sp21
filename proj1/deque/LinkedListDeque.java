@@ -123,6 +123,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         }
         return true;
     }
+
     @Override
     public boolean equals(Object o) {
         // If both objects are non-empty Deque

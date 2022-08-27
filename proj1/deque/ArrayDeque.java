@@ -123,17 +123,22 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         return items[Math.floorMod(nextFirst + 1 + index, items.length)];
     }
 
+    private boolean checkEquals(Deque o) {
+        // Iterate through all items and immediately return false if unequal items
+        for (int i = 0; i < size(); i++) {
+
+            if (!get(i).equals(o.get(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     @Override
     public boolean equals(Object o) {
+        // If both objects are non-empty Deque
         if (o instanceof Deque && ((Deque<?>) o).size() == size() && !isEmpty()) {
-
-            // Iterate through all items and immediately return false if unequal items
-            for (int i = 0; i < size(); i++) {
-                if (((Deque<?>) o).get(i) != get(i)) {
-                    return false;
-                }
-            }
-            return true;
+            return checkEquals((Deque) o);
         }
         return false;
     }

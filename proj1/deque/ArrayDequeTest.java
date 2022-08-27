@@ -151,7 +151,9 @@ public class ArrayDequeTest {
 
         // Add a number to the array, ensure get(0) equals that number
         a1.addFirst(100);
-        assertTrue(a1.get(0) == 100);
+        a1.addFirst(200);
+        assertTrue(a1.get(0) == 200);
+        assertTrue(a1.get(1) == 100);
     }
 
     @Test
