@@ -15,7 +15,7 @@ public class ArrayDequeTest {
      * && is the "and" operation. */
     public void addIsEmptySizeTest() {
 
-        ArrayDeque<String> a1 = new ArrayDeque<String>();
+        ArrayDeque<String> a1 = new ArrayDeque<>();
 
         assertTrue("A newly initialized ArrayDeque should be empty", a1.isEmpty());
         a1.addFirst("front");
@@ -39,7 +39,7 @@ public class ArrayDequeTest {
     /** Adds an item, then removes an item, and ensures that dll is empty afterwards. */
     public void addRemoveTest() {
 
-        ArrayDeque<Integer> a1 = new ArrayDeque<Integer>();
+        ArrayDeque<Integer> a1 = new ArrayDeque<>();
         // should be empty
         assertTrue("a1 should be empty upon initialization", a1.isEmpty());
 
@@ -77,9 +77,9 @@ public class ArrayDequeTest {
     /* Check if you can create LinkedListDeques with different parameterized types*/
     public void multipleParamTest() {
 
-        ArrayDeque<String>  a1 = new ArrayDeque<String>();
-        ArrayDeque<Double>  a2 = new ArrayDeque<Double>();
-        ArrayDeque<Boolean> a3 = new ArrayDeque<Boolean>();
+        ArrayDeque<String>  a1 = new ArrayDeque<>();
+        ArrayDeque<Double>  a2 = new ArrayDeque<>();
+        ArrayDeque<Boolean> a3 = new ArrayDeque<>();
 
         a1.addFirst("string");
         a2.addFirst(3.14159);
@@ -94,10 +94,8 @@ public class ArrayDequeTest {
     /* check if null is return when removing from an empty LinkedListDeque. */
     public void emptyNullReturnTest() {
 
-        ArrayDeque<Integer> a1 = new ArrayDeque<Integer>();
+        ArrayDeque<Integer> a1 = new ArrayDeque<>();
 
-        boolean passed1 = false;
-        boolean passed2 = false;
         assertEquals("Should return null when removeFirst is called on an empty Deque,", null, a1.removeFirst());
         assertEquals("Should return null when removeLast is called on an empty Deque,", null, a1.removeLast());
     }
@@ -106,7 +104,7 @@ public class ArrayDequeTest {
     /* Add large number of elements to deque; check if order is correct. */
     public void bigArrayDequeTest() {
 
-        ArrayDeque<Integer> a1 = new ArrayDeque<Integer>();
+        ArrayDeque<Integer> a1 = new ArrayDeque<>();
         for (int i = 0; i < 10000; i++) {
             a1.addLast(i);
         }
@@ -122,54 +120,62 @@ public class ArrayDequeTest {
 
     @Test
     public void randomizedTest1() {
-        ArrayDeque<Integer> a1 = new ArrayDeque<Integer>();
+        ArrayDeque<Integer> a1 = new ArrayDeque<>();
 
+        // Add 1000 numbers to array
         for (int i = 0; i < 1000; i++) {
             int operation = StdRandom.uniform(0, 2);
 
             if (operation == 0) {
                 a1.addFirst(i);
-            } else {
+            } else if (operation == 1) {
                 a1.addLast(i);
             }
         }
 
-        // Stop at i = 999
+        // Randomly add/remove 1000 numbers from array
         for (int i = 0; i < 1000; i++) {
             int operation = StdRandom.uniform(0, 4);
-            int n = StdRandom.uniform(0, 10);
+            int num = StdRandom.uniform(0, 10);
 
             if (operation == 0) {
-                a1.addFirst(n);
+                a1.addFirst(num);
             } else if (operation == 1) {
                 a1.removeFirst();
             } else if (operation == 2) {
-                a1.addLast(n);
-            } else {
+                a1.addLast(num);
+            } else if (operation == 3){
                 a1.removeLast();
             }
         }
+
+        // Add a number to the array, ensure get(0) equals that number
+        a1.addFirst(100);
+        assertTrue(a1.get(0) == 100);
     }
 
     @Test
     public void randomizedTest2() {
-        ArrayDeque<Integer> a1 = new ArrayDeque<Integer>();
+        ArrayDeque<Integer> a1 = new ArrayDeque<>();
 
-        // Stop at i = 999
         for (int i = 0; i < 1000; i++) {
             int operation = StdRandom.uniform(0, 4);
-            int n = StdRandom.uniform(0, 10);
+            int num = StdRandom.uniform(0, 10);
 
             if (operation == 0) {
-                a1.addFirst(n);
+                a1.addFirst(num);
             } else if (operation == 1) {
                 a1.removeFirst();
             } else if (operation == 2) {
-                a1.addLast(n);
-            } else {
+                a1.addLast(num);
+            } else if (operation == 3) {
                 a1.removeLast();
             }
         }
+
+        // Add a number to the array, ensure get(0) equals that number
+        a1.addFirst(100);
+        assertTrue(a1.get(0) == 100);
     }
 
     @Test

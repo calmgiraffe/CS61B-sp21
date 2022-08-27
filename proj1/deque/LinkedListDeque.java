@@ -15,8 +15,8 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
             front = f;
         }
     }
-    public Node sentinel;
-    public int size;
+    private Node sentinel;
+    private int size;
 
     public LinkedListDeque() { // Constructor
         sentinel = new Node(null, null, null);
@@ -113,7 +113,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         }
     }
 
-    public boolean compareItems(LinkedListDeque o) {
+    private boolean compareItems(LinkedListDeque o) {
         Node tmpThis = this.sentinel.front;
         Node tmp = o.sentinel.front;
 
@@ -132,7 +132,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
      * o is considered equal if it is a Deque and if it contains the same contents in the same order.
      */
     public boolean equals(Object o) {
-        if (o instanceof LinkedListDeque) {
+        if (o instanceof Deque) {
             return this.compareItems((LinkedListDeque) o);
         }
         return false;
