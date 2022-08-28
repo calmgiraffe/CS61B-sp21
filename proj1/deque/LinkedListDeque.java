@@ -126,8 +126,12 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
 
     @Override
     public boolean equals(Object o) {
+        // If o points to same object as this
+        if (o == this) {
+            return true;
+        }
         // If both objects are non-empty Deque
-        if (o instanceof Deque && ((Deque<?>) o).size() == size() && !isEmpty()) {
+        else if (o instanceof Deque && ((Deque<?>) o).size() == size() && !this.isEmpty()) {
             return checkEquals((Deque) o);
         }
         return false;
