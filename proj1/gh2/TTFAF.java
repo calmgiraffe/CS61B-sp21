@@ -25,7 +25,6 @@ public class TTFAF {
         }
 
 
-
         //GuitarPlayer player = new GuitarPlayer(new java.io.File("C:/Users/hansp/Downloads/pirates.mid"));
         //player.play();
 
