@@ -4,15 +4,16 @@ ArrayDeque:
 
 Q: Give an example of at least one idea from the staff solution that would have made your solution better (if any).
 
-A: 
+A: Maybe write a separate private function for increment and decrement to avoid repetition
+   Adding different constructors that allow to immediately add items
 
 Q: What's something you felt proud of in your code, if anything?
 
-A:
+A: The way in which resize was implemented, which avoided complicated math and thinking about the interal structure of an array
 
 Q: What's something that was particularly inelegant in your code, if anything?
 
-A:
+A: Repetition of certain bits of code, which could have been placed in helper functions
 
 Q: What did you learn by talking to your partner about writing ArrayDeque?
 
@@ -20,7 +21,7 @@ A:
 
 Q: What do you wish you would have known before writing ArrayDeque, if anything?
 
-A:
+A: Modulo doesn't work as expected with negative numbers
 
 Q: If you wrote ArrayDeque again, what would you do differently, if anything?
 
@@ -36,11 +37,11 @@ A:
 
 Q: What's something you felt proud of in your code, if anything?
 
-A:
+A: The simplicity and ease of reading, even without comments
 
 Q: What's something that was particularly inelegant in your code, if anything?
 
-A:
+A: Making a helper class within a method for getRecursive. A better solution would have been a separate helper method
 
 Q: What did you learn by talking to your partner about writing LinkedListDeque?
 

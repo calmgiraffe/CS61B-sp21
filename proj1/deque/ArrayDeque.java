@@ -159,10 +159,12 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         int itemsToIterate = size;
         int iteratorPos = 0;
 
+        @Override
         public boolean hasNext() {
             return itemsToIterate > 0;
         }
 
+        @Override
         public T next() {
             T item = get(iteratorPos);
             iteratorPos += 1;
