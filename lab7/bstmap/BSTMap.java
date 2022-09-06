@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class BSTMap<K extends Comparable,V> implements Map61B<K,V> {
+public class BSTMap<K extends Comparable<K>,V> implements Map61B<K,V> {
     private class BSTNode {
         private BSTNode left;
         private BSTNode right;
@@ -102,6 +102,19 @@ public class BSTMap<K extends Comparable,V> implements Map61B<K,V> {
         }
     }
 
+    private void printInOrderHelper(BSTNode tree) {
+        if (tree == null) {
+            return;
+        }
+        printInOrderHelper(tree.left);
+        System.out.println(tree.key);
+        printInOrderHelper(tree.right);
+    }
+
+    public void printInOrder() {
+        printInOrderHelper(tree);
+    }
+
     private void keySetHelper(TreeSet set, BSTNode tree) {
         if (tree != null) {
             set.add(tree.key);
@@ -123,7 +136,6 @@ public class BSTMap<K extends Comparable,V> implements Map61B<K,V> {
         //
         throw new UnsupportedOperationException("not implemented yet");
     }
-
 
     @Override
     /* Removes the mapping for the specified key from this map if present.
