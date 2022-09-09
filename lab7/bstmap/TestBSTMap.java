@@ -91,7 +91,7 @@ public class TestBSTMap {
     @Test
     public void printInOrderTest() {
         BSTMap<String, Integer> b = new BSTMap<String, Integer>();
-        for (int i = 0; i < 100; i++)
+        for (int i = 0; i < 3; i++)
             b.put("hi" + i, 1);
         b.printInOrder();
     }
