@@ -138,30 +138,24 @@ public class BSTMap<K extends Comparable<K>,V> implements Map61B<K,V> {
         return keySet;
     }
 
+    /* Helper method for removeHelper. Gets the maximum value on the left node of the current node (at the time
+    * of the calling of getMaxKey.
+    * If no children, the node is the maximum value. If there is a child on the node's left branch, */
     private K getMaxKey(BSTNode tree, boolean fromLeft) {
-        K maxKey = tree.key;
-
         if (tree.left == null && tree.right == null) { // if no children
-            if (fromLeft) {
-                tree.parent.left = null;
-            } else {
-                tree.parent.right = null;
-            }
-            return maxKey;
+            severParentLink(tree, fromLeft);
+            return tree.key;
 
         } else if (tree.left != null && tree.right == null) { // if child on current node's left branch
-            if (fromLeft) {
-                tree.parent.left = tree.left;
-            } else {
-                tree.parent.right = tree.left;
-            }
-            return maxKey;
+            linkParentWithChild(tree, fromLeft);
+            return tree.key;
 
         } else { // if child on current node's right branch
             return getMaxKey(tree.right, false);
         }
     }
 
+    /* Navigates to parent node and sets its appropriate branch (left/right) to null */
     private void severParentLink(BSTNode tree, boolean fromLeft) {
         if (fromLeft) {
             tree.parent.left = null;
@@ -170,31 +164,41 @@ public class BSTMap<K extends Comparable<K>,V> implements Map61B<K,V> {
         }
     }
 
+    /* Navigates to parent node and sets its appropriate branch (left/right) to the child of the current node.
+    * Then, sets the parent of the child node to the current node's parent */
     private void linkParentWithChild(BSTNode tree, boolean fromLeft) {
-        if (tree.left != null && fromLeft) {
-            tree.parent.left = tree.left;
+        if (tree.left != null) {
+            if (fromLeft) { // if fromLeft and has left child
+                tree.parent.left = tree.left;
 
-        } else if (tree.left != null && !fromLeft) {
-            tree.parent.right = tree.left;
+            } else { // if fromRight and has left child
+                tree.parent.right = tree.left;
+            }
+            tree.left.parent = tree.parent;
 
-        } else if (tree.right != null && fromLeft) {
-            tree.parent.left = tree.right;
+        } else if (tree.right != null) {
+            if (fromLeft) { // if fromLeft and has right child
+                tree.parent.left = tree.right;
 
-        } else if (tree.right != null && !fromLeft) {
-            tree.parent.right = tree.right;
+            } else { // if fromRight and has right child
+                tree.parent.right = tree.right;
+            }
+            tree.right.parent = tree.parent;
         }
     }
 
+    /* Helper method for remove(). If the node to be removed is a match with the current node, one of three cases:
+     * current node had no child, current node has exactly one child, current node has two children.
+     * If key is not a match with current node's key, navigate down the appropriate branch of the current node. */
     private void removeHelper(K key, BSTNode tree, boolean fromLeft) {
 
-        // If the node to be removed is a match with the current node
         if (key == tree.key) {
-
-            if (tree.left == null && tree.right == null) { // if no children, disconnect from the parent
+            if (tree.left == null && tree.right == null) {
                 severParentLink(tree, fromLeft);
-            } else if (tree.left == null || tree.right == null) { // if current node has exactly one child
+            } else if (tree.left == null || tree.right == null) {
                 linkParentWithChild(tree, fromLeft);
-            } else { // if child on both branches
+            } else {
+                // Get maximum key on left branch, then update current node's key
                 tree.key = getMaxKey(tree.left, true);
             }
             size -= 1;
@@ -211,7 +215,7 @@ public class BSTMap<K extends Comparable<K>,V> implements Map61B<K,V> {
      * Not required for Lab 7. If you don't implement this, throw an
      * UnsupportedOperationException. */
     public V remove(K key) {
-        // Initially get a copy of the value that is being searched for
+        // Initially get a copy of the value that is being searched for. Returns null if no nodes
         V value = get(key);
 
         // If tree has nodes, traverse through the BST and until key is found

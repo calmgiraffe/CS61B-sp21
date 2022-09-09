@@ -113,4 +113,22 @@ public class TestBSTMapExtra {
         assertEquals(null, noChild.get('Z'));
     }
 
+    @Test
+    public void testRemoveComplicated() {
+        BSTMap b = new BSTMap();
+        b.put('G', 7);
+        b.put('Z', 26);
+        b.put('B', 2);
+        b.put('A', 1);
+        b.put('E', 5);
+        b.put('D', 4);
+        b.put('F', 6);
+        b.put('C', 3);
+        System.out.println("Before:");
+        b.printInOrder();
+        assertTrue(b.remove('E').equals(5));
+        assertEquals(null, b.get('E'));
+        System.out.println("After:");
+        b.printInOrder();
+    }
 }
