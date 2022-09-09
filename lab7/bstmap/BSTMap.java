@@ -79,10 +79,9 @@ public class BSTMap<K extends Comparable<K>,V> implements Map61B<K,V> {
 
     private BSTNode putHelper(K key, V value, BSTNode tree) {
         if (tree == null) {
-            // if at null node, make return new node
-            size += 1;
+            // make new node if at null node
             return new BSTNode(key, value);
-        } else if (key.equals(tree.key)) {
+        }  else if (key.equals(tree.key)) {
             // if key already exists, update its value
             tree.value = value;
         } else if (key.compareTo(tree.key) < 0) {
@@ -102,10 +101,11 @@ public class BSTMap<K extends Comparable<K>,V> implements Map61B<K,V> {
     public void put(K key, V value) {
         if (size() == 0) {
             sentinel.right = new BSTNode(key, value);
-            size += 1;
+            sentinel.right.parent = sentinel;
         } else {
             putHelper(key, value, sentinel.right);
         }
+        size += 1;
     }
 
     private void printInOrderHelper(BSTNode tree) {
