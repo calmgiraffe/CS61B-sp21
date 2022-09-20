@@ -112,7 +112,7 @@ public class MyHashMap<K, V> implements Map61B<K, V>, Iterable<K> {
 
         if (buckets[index] != null) {
             for (Node node: buckets[index]) {
-                if (node.key == key) {
+                if (node.key.equals(key)) {
                     return true;
                 }
             }
@@ -129,7 +129,7 @@ public class MyHashMap<K, V> implements Map61B<K, V>, Iterable<K> {
 
         if (buckets[index] != null) {
             for (Node node: buckets[index]) {
-                if (node.key == key) {
+                if (node.key.equals(key)) {
                     return node.value;
                 }
             }
@@ -152,15 +152,16 @@ public class MyHashMap<K, V> implements Map61B<K, V>, Iterable<K> {
         for (Collection<Node> bucket: buckets) { // Iterate through all Collections in this.buckets
             if (bucket != null) {
                 for (Node n: bucket) { // iterate through all Nodes in Collection
-                    int index = Math.floorMod(n.key.hashCode(), newNumBuckets);
+                    int newIndex = Math.floorMod(n.key.hashCode(), newNumBuckets);
 
-                    if (newBuckets[index] == null) {
-                        newBuckets[index] = createBucket();
+                    if (newBuckets[newIndex] == null) {
+                        newBuckets[newIndex] = createBucket();
                     }
-                    newBuckets[index].add(createNode(n.key, n.value));
+                    newBuckets[newIndex].add(createNode(n.key, n.value));
                 }
             }
         }
+        numBuckets = newNumBuckets;
         buckets = newBuckets;
     }
 
@@ -175,11 +176,12 @@ public class MyHashMap<K, V> implements Map61B<K, V>, Iterable<K> {
         if (buckets[index] == null) {
             buckets[index] = createBucket();
             buckets[index].add(createNode(key, value));
+            size += 1;
 
         } else {
             // Iterate through bucket and update value if key matches
             for (Node node: buckets[index]) {
-                if (node.key == key) {
+                if (node.key.equals(key)) {
                     node.value = value;
                     return;
                 }
@@ -235,5 +237,4 @@ public class MyHashMap<K, V> implements Map61B<K, V>, Iterable<K> {
     public V remove(K key, V value) {
         throw new UnsupportedOperationException();
     }
-
 }
