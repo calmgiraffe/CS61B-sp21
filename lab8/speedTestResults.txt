@@ -1,0 +1,36 @@
+InsertRandom
+What would you like L to be?: 20
+
+Enter # strings to insert into hashmap.ULLMap: 10000
+class hashmap.ULLMap: 0.31 sec
+
+Enter # strings to insert into your hashmap.MyHashMap: 1000000
+class hashmap.MyHashMap: 0.92 sec
+
+Enter # strings to insert into Java's HashMap: 1000000
+Java's Built-in HashMap: 0.51 sec
+
+
+InsertInOrder
+Enter # strings to insert into hashmap.ULLMap: 10000
+class hashmap.ULLMap: 0.85 sec
+
+Enter # strings to insert into hashmap.MyHashMap: 1000000
+class hashmap.MyHashMap: 0.67 sec
+
+Enter # strings to insert into Java's HashMap: 1000000
+Java's Built-in HashMap: 0.54 sec
+
+When would it be better to use a BSTMap/TreeMap?
+Maybe when you are inserting in an order that always results in the bushiest tree
+This means height of tree is always logn, as opposed to O(n) time for traversing some linked lists
+But if you use a BST as the Collection, maybe a HashMap is always the superior choice
+
+
+BucketsSpeedTest
+Enter # strings to insert into each map: 1000000
+class hashmap.MyHashMapALBuckets: 0.90 sec
+class hashmap.MyHashMapLLBuckets: 0.90 sec
+class hashmap.MyHashMapTSBuckets: 1.11 sec
+class hashmap.MyHashMapHSBuckets: 1.38 sec
+class hashmap.MyHashMapPQBuckets: 1.01 sec
