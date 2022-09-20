@@ -8,7 +8,7 @@ import java.util.*;
  *
  *  Assumes null keys will never be inserted, and does not resize down upon remove().
  *  @author calmgiraffe */
-public class MyHashMap<K, V> implements Map61B<K, V> {
+public class MyHashMap<K, V> implements Map61B<K, V>, Iterable<K> {
 
     /**
      * Protected helper class to store key/value pairs
@@ -87,7 +87,6 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
      * <p>
      * BE SURE TO CALL THIS FACTORY METHOD WHEN CREATING A TABLE SO
      * THAT ALL BUCKET TYPES ARE OF JAVA.UTIL.COLLECTION
-     *
      * @param tableSize the size of the table to create */
     private Collection<Node>[] createTable(int tableSize) {
         return new Collection[tableSize];
@@ -201,7 +200,22 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     public Set<K> keySet() {
         Set<K> keys = new HashSet<>();
 
+        for (Collection<Node> bucket: buckets) {
+            if (bucket != null) {
+                for (Node n: bucket) {
+                    keys.add(n.key);
+                }
+            }
+        }
+        return keys;
+    }
 
+    /**
+     * Returns Iterator that iterators over the keys */
+    @Override
+    public Iterator<K> iterator() {
+        Set<K> key = keySet();
+        return key.iterator();
     }
 
     /**
@@ -210,7 +224,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
      * UnsupportedOperationException. */
      @Override
      public V remove(K key) {
-        throw new UnsupportedOperationException;
+        throw new UnsupportedOperationException();
      }
 
     /**
@@ -219,7 +233,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
      * throw an UnsupportedOperationException. */
     @Override
     public V remove(K key, V value) {
-        throw new UnsupportedOperationException;
+        throw new UnsupportedOperationException();
     }
 
 }
