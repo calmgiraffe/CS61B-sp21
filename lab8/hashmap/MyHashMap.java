@@ -97,9 +97,10 @@ public class MyHashMap<K, V> implements Map61B<K, V>, Iterable<K> {
     @Override
     public void clear() {
         for (Collection bucket: buckets) {
-            if (bucket != null) {
-                bucket.clear();
+            if (bucket == null) {
+                continue;
             }
+            bucket.clear();
         }
         size = 0;
     }
@@ -150,15 +151,15 @@ public class MyHashMap<K, V> implements Map61B<K, V>, Iterable<K> {
         Collection<Node>[] newBuckets = createTable(newNumBuckets);
 
         for (Collection<Node> bucket: buckets) { // Iterate through all Collections in this.buckets
-            if (bucket != null) {
-                for (Node n: bucket) { // iterate through all Nodes in Collection
-                    int newIndex = Math.floorMod(n.key.hashCode(), newNumBuckets);
-
-                    if (newBuckets[newIndex] == null) {
-                        newBuckets[newIndex] = createBucket();
-                    }
-                    newBuckets[newIndex].add(createNode(n.key, n.value));
+            if (bucket == null) {
+                continue;
+            }
+            for (Node n: bucket) { // iterate through all Nodes in Collection
+                int newIndex = Math.floorMod(n.key.hashCode(), newNumBuckets);
+                if (newBuckets[newIndex] == null) {
+                    newBuckets[newIndex] = createBucket();
                 }
+                newBuckets[newIndex].add(createNode(n.key, n.value));
             }
         }
         numBuckets = newNumBuckets;
@@ -173,28 +174,24 @@ public class MyHashMap<K, V> implements Map61B<K, V>, Iterable<K> {
     public void put(K key, V value) {
         int index = Math.floorMod(key.hashCode(), numBuckets);
 
-        if (buckets[index] == null) {
+        if (buckets[index] == null) { // If no key matches, create a new node
             buckets[index] = createBucket();
-            buckets[index].add(createNode(key, value));
-            size += 1;
 
         } else {
-            // Iterate through bucket and update value if key matches
-            for (Node node: buckets[index]) {
+            for (Node node: buckets[index]) { // Iterate through bucket and update value if key matches
                 if (node.key.equals(key)) {
                     node.value = value;
                     return;
                 }
             }
-            // If no key matches, create a new node
-            buckets[index].add(createNode(key, value));
-            size += 1;
-
-            if ((double) size/numBuckets >= maxLoad) {
-                resize(2*numBuckets);
-            }
         }
-     }
+
+        buckets[index].add(createNode(key, value));
+        size += 1;
+        if ((double) size/numBuckets >= maxLoad) {
+            resize(2*numBuckets);
+        }
+    }
 
     /**
      * Returns a Set view of the keys contained in this map. */
@@ -203,10 +200,11 @@ public class MyHashMap<K, V> implements Map61B<K, V>, Iterable<K> {
         Set<K> keys = new HashSet<>();
 
         for (Collection<Node> bucket: buckets) {
-            if (bucket != null) {
-                for (Node n: bucket) {
-                    keys.add(n.key);
-                }
+            if (bucket == null) {
+                continue;
+            }
+            for (Node n: bucket) {
+                keys.add(n.key);
             }
         }
         return keys;
